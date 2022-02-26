@@ -24,9 +24,9 @@ function Navbar() {
   return (
     <nav className='py-3 flex justify-between items-center flex-col sm:flex-row'>
       <div>
-        <Link to='/' className='font-header font-semibold uppercase text-2xl bg-clip-text text-transparent bg-gradient-to-r from-white to-primary '>Sphere <span className='font-semibold'>Art</span></Link>
+        <Link to='/' className='font-header font-semibold uppercase text-2xl bg-clip-text text-transparent bg-gradient-to-r from-white to-primary'>Sphere <span className='font-semibold'>Art</span></Link>
       </div>
-      <div className='font-body'>
+      <div className='font-body py-2 md:py-0'>
         <Link className='mx-3 text-gray-300 font-semibold duration-300 hover:text-white' to='/explore'>Explore</Link>
         <a className='mx-3 text-gray-300 font-semibold duration-300 hover:text-white' href='#'>State</a>
         <Link className='mx-3 text-gray-300 font-semibold duration-300 hover:text-white' to='/Create'>Create</Link>

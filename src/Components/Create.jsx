@@ -5,7 +5,7 @@ import { create } from 'ipfs-http-client';
 
 
 function Create() {
-  
+
   const [ImgName, setImgName] = useState("");
   const [File, setFile] = useState("");
   const [Name, setName] = useState("");
@@ -16,6 +16,28 @@ function Create() {
   async function showInputImgName(e) {
     setImgName(e.target.files[0].name);
     setFile(e.target.files[0]);
+  }
+
+  const showErr = (Msg = null) => {
+    let errMsg = document.getElementById("errorMsg");
+    if (Msg !== null) {
+      errMsg.classList.add("py-1.5");
+      errMsg.innerHTML = Msg;
+    } else {
+      errMsg.classList.remove("py-1.5");
+      errMsg.innerHTML = "";
+    }
+  }
+
+  const showSucc = (Msg = null) => {
+    let succMsg = document.getElementById("succMsg");
+    if (Msg !== null) {
+      succMsg.classList.add("py-1.5");
+      succMsg.innerHTML = Msg;
+    } else {
+      succMsg.classList.remove("py-1.5");
+      succMsg.innerHTML = "";
+    }
   }
 
   const getAbi = async () => {
@@ -45,20 +67,35 @@ function Create() {
         var _description = web3.utils.asciiToHex(Description);
 
         if (ImgName !== "") {
-          const ipfs = create({ host: 'ipfs.infura.io', port: 5001, protocol: 'https' });
-          const cid = await ipfs.add(File);
-          let _image = `https://ipfs.infura.io/ipfs/${cid.path}`;
-          let _price = web3.utils.toWei("0.2", "ether");
-          const mint = await contract.methods.Mint(_title, _description, _price, _image).send({ from: account });
-          console.log(mint);
+          try {
+            const ipfs = create({ host: 'ipfs.infura.io', port: 5001, protocol: 'https' });
+            const cid = await ipfs.add(File);
+            let _image = `https://ipfs.infura.io/ipfs/${cid.path}`;
+            let _price = web3.utils.toWei("0.2", "ether");
+            const mint = await contract.methods.Mint(_title, _description, _price, _image).send({ from: account });
+            // hide error messages if there's any one
+            showErr();
+            // Show success messages
+            showSucc("Success upload");
+            console.log(mint);
+          } catch (err) {
+            showErr("Something happen! Try again");
+            console.log(err);
+          }
         } else {
-          console.log("Please! select an image");
+          // hide success messages if there's any one
+          showErr();
+          showErr("Please! select an image");
         }
       } else {
-        console.log("Please! Complete the fields");
+        // hide success messages if there's any one
+        showErr();
+        showErr("Please! Complete the Form");
       }
     } else {
-      console.log("Please Connect to your wallet");
+      // hide success messages if there's any one
+      showErr();
+      showErr("Connect to your wallet first");
     }
   }
 
@@ -66,7 +103,11 @@ function Create() {
 
     <div className='py-4'>
       <h1 className='font-header text-center font-semibold text-4xl py-3'>Create New Item</h1>
-      <form onSubmit={(e) => { e.preventDefault() }}>
+
+      <div id="errorMsg" className='bg-red-600 px-3 my-3 rounded-lg'></div>
+      <div id="succMsg" className='bg-green-500 px-3 my-3 rounded-lg'></div>
+
+      <form onSubmit={(e) => { e.preventDefault() }} >
         <div className='flex flex-col'>
           <label>Name <span className='text-red-500'>*</span></label>
           <input value={Name} type="text" className='outline-none px-2 py-1 my-2 rounded-lg border border-[rgba(255,255,255,.3)] bg-[rgba(255,255,255,.05)] backdrop-blur-sm' placeholder='Item name' onChange={(e) => { setName(e.target.value) }} />

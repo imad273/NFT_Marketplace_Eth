@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import Web3 from 'web3';
+import boxicons from 'boxicons';
 
 function Explore() {
 
@@ -36,10 +37,8 @@ function Explore() {
   }
 
   const FindTokens = async () => {
-    let p = document.createElement("p");
-    p.innerHTML = "Waite";
-    let tokensHtml = document.getElementById('tokens');
-    tokensHtml.appendChild(p);
+    let waitHtml = document.getElementById('wait');
+
     const abiJSON = await getAbi();
     const contract = new web3.eth.Contract(abiJSON, contract_address);
     const getTokens = await contract.methods.findAllToken().call();
@@ -49,7 +48,8 @@ function Explore() {
     } else {
       setToken(["No Token"]);
     }
-    tokensHtml.removeChild(p)
+
+    waitHtml.classList.add("hidden"); 
   }
 
   const buyToken = async (_id) => {
@@ -60,8 +60,12 @@ function Explore() {
   }
 
   return (
-    <div>
+    <div className='h-full'>
       <div className='py-4 flex flex-wrap justify-center' id='tokens'>
+        <div className='py-6 px-2 flex flex-col items-center' id='wait'>
+          <box-icon name='analyse' color='#fff' size='lg' type='solid' animation='spin' ></box-icon>
+          <p className='font-header text-2xl py-2 font-semibold'>Loading</p>
+        </div>
         { Tokens[0] === "No Token" ?
           <p>There's No tokens to show</p> :
           Tokens.map((token, i) => {

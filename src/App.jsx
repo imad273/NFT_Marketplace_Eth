@@ -42,15 +42,12 @@ function App() {
       const balance = await contract.methods.balanceOf(Account).call();
       const token = await contract.methods.findToken(0).call();
       const allToken = await contract.methods.findAllToken().call();
-      console.log(allToken);
-
-      /* if(balance > 0) {
+      /* console.log(allToken);
+      if(balance > 0) {
         console.log(token);
       } else {
         console.log("you dont't have any balance");
       } */
-    } else {
-      console.log("Please Connect to your wallet")
     }
   }
 
