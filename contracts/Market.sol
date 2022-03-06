@@ -6,13 +6,13 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 contract Market is ERC721 {
 
    struct Listing {
-		uint tokenId;
-		address owner;
+      uint tokenId;
+      address owner;
       bytes32 title;
       bytes32 description;
-		uint price;
+      uint price;
       string image;
-	}
+   }
 
    Listing[] public listingsArr;
 
